@@ -4,7 +4,7 @@ from ckeditor.fields import RichTextField
 
 
 class User(AbstractUser):
-    pass
+    avatar = models.ImageField(upload_to='avatar/%Y/%m', null=True)
 
 
 class BaseModel(models.Model):
@@ -14,6 +14,7 @@ class BaseModel(models.Model):
 
     class Meta:
         abstract = True
+        ordering = ['-id']
 
 class Category(BaseModel):
     name = models.CharField(max_length = 50, null = False)
@@ -57,3 +58,7 @@ class Tag(BaseModel):
 
     def __str__(self):
         return self.name
+
+
+class rating(BaseModel):
+    pass

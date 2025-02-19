@@ -2,11 +2,15 @@ from django.db.models import Count
 from django.template.response import TemplateResponse
 from django.urls import path
 from django.contrib import admin
+from django.utils.timezone import override
+
 from .models import Category, Course, Lesson, Tag
-from django.utils.html import mark_safe
+from django.utils.html import mark_safe, escape
 from django import forms
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from courses import dao
+
+
 class CourseAppAdminSite(admin.AdminSite):
     site_header = 'Hệ thống khoá học trực tuyến'
 
@@ -20,6 +24,7 @@ class CourseAppAdminSite(admin.AdminSite):
                             'admin/stats.html', {
                             'stats': dao.count_courses_by_cate()
                             })
+
 
 admin_site = CourseAppAdminSite(name='myadmin')
 
@@ -61,10 +66,17 @@ class TagInLineLesson(admin.StackedInline):
 
 
 class CourseAdmin(admin.ModelAdmin):
+    list_display = ['subject','active','create_date','description','category']
+
     readonly_fields = ['img']
     inlines = [TagInLineCourse]
     form = CourseForm
     exclude = ['tags']
+
+    def description(self, Course):
+        return escape(Course.description)
+
+    description.allow_tags = False
 
     def img(self, Course):
         if Course:

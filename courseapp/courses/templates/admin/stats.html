@@ -14,4 +14,68 @@
 
 </ul>
 
+<div>
+  <canvas id="myChart"></canvas>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+<!--    window.onload = () => {-->
+<!--        const ctx = document.getElementById('myChart');-->
+
+<!--        new Chart(ctx, {-->
+<!--        type: 'bar',-->
+<!--        data: {-->
+<!--            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],-->
+<!--            datasets: [{-->
+<!--                label: '# of Votes',-->
+<!--                data: [12, 19, 3, 5, 2, 3],-->
+<!--                borderWidth: 1-->
+<!--            }]-->
+<!--        },-->
+<!--        options: {-->
+<!--            scales: {-->
+<!--            y:  {-->
+<!--                beginAtZero: true-->
+<!--                }-->
+<!--            }-->
+<!--        }-->
+<!--    });-->
+
+    let labels = [];
+    let values = [];
+
+    {% for c in stats %}
+    values.push({{ c.count }})
+    labels.push('{{ c.name }}')
+    {% endfor %}
+
+    const ctx = document.getElementById('myChart');
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Số lượng',
+        data: values,
+        borderWidth: 1,
+        backgroundColor: [
+          'rgb(255, 99, 132)',
+          'rgb(54, 162, 235)',
+          'rgb(255, 205, 86)'
+        ],
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+</script>
 {% endblock %}
