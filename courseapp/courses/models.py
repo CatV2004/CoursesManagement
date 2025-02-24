@@ -43,7 +43,7 @@ class Lesson(BaseModel):
     subject = models.CharField(max_length = 255, null = False)
     content = RichTextField()
     image = models.ImageField(upload_to='lessons/%Y/%m')
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_query_name='lessons')
     tags = models.ManyToManyField('Tag')
 
     def __str__(self):
